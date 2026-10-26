@@ -1,0 +1,89 @@
+
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+void to_lowercase(char text[]) {
+    for (int i = 0; text[i] != '\0'; i++) {
+        text[i] = (char)tolower((unsigned char)text[i]);
+    }
+}
+
+void remove_newline(char text[]) {
+    text[strcspn(text, "\n")] = '\0';
+}
+
+void chatbot_response(char input[]) {
+    to_lowercase(input);
+
+    if (strstr(input, "hello") ||
+        strstr(input, "hi") ||
+        strstr(input, "hey")) {
+        printf("AI: Hello! How can I help you?\n");
+    }
+    else if (strstr(input, "your name") ||
+             strstr(input, "who are you")) {
+        printf("AI: I am Mini AI, a chatbot written in C!\n");
+    }
+    else if (strstr(input, "how are you")) {
+        printf("AI: I am doing great! Thanks for asking.\n");
+    }
+    else if (strstr(input, "what is ai")) {
+        printf("AI: AI means Artificial Intelligence. ");
+        printf("It helps computers perform intelligent tasks.\n");
+    }
+    else if (strstr(input, "your creator") ||
+             strstr(input, "who created you")) {
+        printf("AI: I was created by a C programmer like you!\n");
+    }
+    else if (strstr(input, "help")) {
+        printf("AI: You can ask me about AI, my name, or greetings.\n");
+    }
+    else if (strstr(input, "bye") ||
+             strstr(input, "exit") ||
+             strstr(input, "quit")) {
+        printf("AI: Goodbye! Have a nice day.\n");
+    }
+    else {
+        printf("AI: I don't know that yet. Try asking something else!\n");
+    }
+}
+
+int main(void) {
+    char input[500];
+
+    printf("=================================\n");
+    printf("       MINI AI CHATBOT\n");
+    printf("=================================\n");
+    printf("Type 'bye' to end the chat.\n\n");
+
+    while (1) {
+        printf("You: ");
+
+        if (fgets(input, sizeof(input), stdin) == NULL) {
+            break;
+        }
+
+        remove_newline(input);
+
+        if (strlen(input) == 0) {
+            continue;
+        }
+
+        int should_exit =
+            strstr(input, "bye") != NULL ||
+            strstr(input, "exit") != NULL ||
+            strstr(input, "quit") != NULL;
+
+        chatbot_response(input);
+
+        if (should_exit) {
+            break;
+        }
+
+        printf("\n");
+    }
+
+    return 0;
+}
